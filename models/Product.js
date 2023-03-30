@@ -89,7 +89,7 @@ const productSchema = mongoose.Schema({
     if(this.quantity == 0){
       this.status = 'out-of-stock'
     }
-  
+   
     next() 
   })
   
@@ -106,6 +106,6 @@ const productSchema = mongoose.Schema({
   // SCHEMA - MODEL - QUERY
   
   //model design
-  const Product =mongoose.model('Product', productSchema)
+  const Product = mongoose.model('Product', productSchema)
 
   module.exports = Product;
