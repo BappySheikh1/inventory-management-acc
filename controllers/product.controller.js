@@ -1,5 +1,5 @@
 const Product = require("../models/Product")
-const { getProductService, createProductService, updateProductService, bulkUpdateProductService } = require("../services/product.services")
+const { getProductService, createProductService, updateProductByIdService, bulkUpdateProductByIdService, deleteProductByIdService, bulkDeleteProductByIdService } = require("../services/product.services")
 
 
 exports.getProduct= async (req,res)=>{
@@ -46,10 +46,10 @@ exports.getProduct= async (req,res)=>{
     }
     }
 
-    exports.updateProduct=async(req,res,next)=>{
+    exports.updateProductById=async(req,res,next)=>{
       try {
        const {id} =req.params
-        const result=await updateProductService(id,req.body)
+        const result=await updateProductByIdService(id,req.body)
         
         res.status(200).json({
           status: 'success',
@@ -67,10 +67,59 @@ exports.getProduct= async (req,res)=>{
       } 
     }
 
-    exports.bulkUpdateProduct=async(req,res,next)=>{
+    exports.bulkUpdateProductById =async(req,res,next)=>{
       try {
-        const result=await bulkUpdateProductService(req.body)
+        const result=await bulkUpdateProductByIdService(req.body)
         
+        res.status(200).json({
+          status: 'success',
+          message:"successfully updated the product",
+          data: result,
+        })
+      } catch (error) {
+        res
+      .status(400)
+      .json({
+        status: "failed",
+        message: "Couldn't update the product",
+        error: error.message
+      })
+      } 
+    }
+
+    exports.bulkDeleteProductById =async(req,res,next)=>{
+      try {
+        const result=await bulkDeleteProductByIdService(req.body.ids)
+        
+        res.status(200).json({
+          status: 'success',
+          message:"successfully Deleted the given product",
+          data: result,
+        })
+      } catch (error) {
+        res
+      .status(400)
+      .json({
+        status: "failed",
+        message: "Couldn't delete the given product",
+        error: error.message
+      })
+      } 
+    }
+
+    exports.deleteProductById =async(req,res,next)=>{
+      try {
+        const {id}=req.params
+
+        const result =await deleteProductByIdService(id);
+        
+        if(!result.deletedCount){
+          return res.status(400).json({
+            status: 'fail',
+            message:"Couldn't delete the product"
+          })
+        }
+
         res.status(200).json({
           status: 'success',
           message:"successfully updated the product",
