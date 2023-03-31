@@ -8,8 +8,14 @@ exports.getProduct= async (req,res)=>{
       // .where('name').equals(/\w/)
       // .where("quantity").gt(100)
       // .limit(2).sort({quantity: -1})
-  
-      const product =await getProductService()
+      
+      const queryObject= {...req.query};
+
+      // sort, page - exclude
+      const excludeFields =['sort',  'page', 'limit']
+      excludeFields.forEach(field => delete queryObject[field])
+
+      const product =await getProductService(queryObject)
   
       res.status(200).json({
         status:'success',
@@ -112,7 +118,7 @@ exports.getProduct= async (req,res)=>{
         const {id}=req.params
 
         const result =await deleteProductByIdService(id);
-        
+
         if(!result.deletedCount){
           return res.status(400).json({
             status: 'fail',

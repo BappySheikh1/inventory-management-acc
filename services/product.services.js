@@ -1,7 +1,7 @@
 const Product = require("../models/Product")
 
-exports.getProductService= async()=>{
-    const products= await Product.find({})
+exports.getProductService= async(query)=>{
+    const products= await Product.find(query)
 
     return products
 }
@@ -33,8 +33,8 @@ exports.bulkUpdateProductByIdService=async(data)=>{
 
 }
 
-exports.bulkDeleteProductByIdService=async(ids)=>{
-    const result=await Product.deleteMany({_id: ids})
+exports.bulkDeleteProductByIdService=async()=>{
+    const result=await Product.deleteMany({})
 
 
     return result
